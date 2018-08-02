@@ -30,22 +30,22 @@ module.exports = [
 {
 	method: 'GET',
 	path: URI + `/{id}`,
-	handler: (req, reply) => {
-		CategorieModel.findById(req.params.id, (error, data) => {
+	handler: (req, h) => {
+		return CategorieModel.findById(req.params.id, (error, data) => {
 			if (error) {
-				reply({
+				return{
 					error: true,
 					data: error,
 					statusCode: 401,
 					statusText: 'NOK',
-				}).code(401)
+				}
 			} else {
-				reply({
+				return{
 					error: false,
 					data: data,
 					statusCode: 200,
 					statusText: 'OK'
-				}).code(200)
+				}
 			}
 		})
 	}
@@ -55,7 +55,8 @@ module.exports = [
 {
 	method: 'POST',
 	path: URI,
-	handler: (request, reply) => {
+	handler: (request, h) => {
+		
 		const categorie = new CategorieModel({
 				name: request.payload.name
 			, status: request.payload.status
@@ -65,31 +66,33 @@ module.exports = [
 		categorie.save((error, data) => {
 			if (error) {
 				if (error.index == 0) {
-					reply({
+					return{
 						error: true,
 						data: 'Já existe uma categoria registrada com esse nome!',
 						statusCode: 403,
 						statusText: 'NOK',
-					}).code(403)
+					}
 				} else {
-					reply({
+					return{
 						error: true,
 						data: error,
 						statusCode: 401,
 						statusText: 'NOK',
-					})
+					}
 				}
 			} else {
-				reply({
+				return{
 					error: false,
 					data: data,
 					message: 'Nova categoria cadastrada com sucesso!',
 					statusCode: 201,
 					statusText: 'OK'
-				}).code(201)
+				}
 			}
 		})
+	return {response:'cadastro'}
 	}
+
 },
 
 // Update a categorie by id
