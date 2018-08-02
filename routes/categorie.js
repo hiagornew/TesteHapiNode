@@ -99,7 +99,7 @@ module.exports = [
 {
 	method: 'PUT',
 	path: URI + `/{id}`,
-	handler: (request, reply) => {
+	handler: (request, h) => {
 		const _id = { _id: request.params.id }
 
 		const categorie = {
@@ -110,22 +110,23 @@ module.exports = [
 
 		CategorieModel.update(_id, categorie, { multi: false }, (error, data) => {
 			if (error) {
-				reply({
+				return{
 					error: true,
 					data: error,
 					statusCode: 401,
 					statusText: 'NOK',
-				}).code(401)
+				}
 			} else {
-				reply({
+				return{
 					error: false,
 					data: data,
 					message: 'Categoria editada com sucesso!',
 					statusCode: 204,
 					statusText: 'OK'
-				}).code(204)
+				}
 			}
 		})
+		return{ response:'Atualizado'};
 	}
 },
 
