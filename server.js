@@ -13,6 +13,17 @@ const server = new Hapi.server({
 	routes: { cors: true }
 })
 
+server.route({
+	method: 'GET',
+	path: `${Constants.URI}`,
+	handler: (request, h) => {
+	  return 'Hello Word!';
+	}
+  })
+
+server.route(Product)
+server.route(Categorie)
+
 server.start((err) => {
 	if (err) {
 		throw err

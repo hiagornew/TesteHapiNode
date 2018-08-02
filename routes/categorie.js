@@ -10,22 +10,17 @@ module.exports = [
 	{
 		method: 'GET',
 		path: URI,
-		handler: (req, reply) => {
-			CategorieModel.find((error, data) => {
+		handler: (request, h) => {
+			return CategorieModel.find((error, data) => {
 				if (error) {
-					reply({
+					return{
 						error: true,
 						data: error,
 						statusCode: 401,
 						statusText: 'NOK',
-					}).code(401)
+					}
 				} else {
-					reply({
-						error: false,
-						data: data,
-						statusCode: 200,
-						statusText: 'OK'
-					}).code(200)
+					return {data};
 				}
 			})
 		}
