@@ -91,7 +91,11 @@ module.exports = [
 			
 		}) */
 		
-		return CompanyModel.find({name:request.params.name ,podeArea:{$gte: 1}});
+		const resultFind = CompanyModel.find({name:request.params.name ,podeArea:{$gte: 1}},(error, data)=>{
+			
+		});
+
+		return resultFind;
 		
 		
 		
