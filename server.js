@@ -4,7 +4,7 @@ const db = require('./config/db')
 const Constants = require('./helpers/constants')
 const Categorie = require('./routes/categorie')
 const Product = require('./routes/product')
-
+const Company = require('./routes/company')
 
 const server = new Hapi.server({
     
@@ -25,11 +25,16 @@ server.route({
 
 server.route(Product)
 server.route(Categorie)
+server.route(Company)
 
-server.start((err) => {
-	if (err) {
-		throw err
-	}
-
+const init = async() =>{
+	await server.start();
 	console.log(`Servidor rodando em ${server.info.uri}`)
-})
+}
+process.on('unhandledRejection', (err) => {
+
+	console.log(err);
+	process.exit(1);
+});
+
+init();
