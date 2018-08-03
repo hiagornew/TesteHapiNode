@@ -58,11 +58,11 @@ module.exports = [
  // Get company area free
  {
 	method: 'GET',
-	path: URI + `/areafree` + `/{id}`,
+	path: URI + `/areafree` + `/{name}`,
 	
 	handler: (request, h) => {
 		
-		/* return CompanyModel.find(request.params.id,(error, data) => {
+		/* CompanyModel.findById(request.params.id,(error, data) => {
 			
 			if (error) {
 				return{
@@ -88,8 +88,12 @@ module.exports = [
 				
 				
 			}
+			
 		}) */
-		return CompanyModel.find({podeArea:{$gte: 1}});
+		
+		return CompanyModel.find({name:request.params.name ,podeArea:{$gte: 1}});
+		
+		
 		
 	}
 },
