@@ -58,30 +58,39 @@ module.exports = [
  // Get company area free
  {
 	method: 'GET',
-	path: URI + `/areafree`+ `/{id}`,
+	path: URI + `/areafree` + `/{id}`,
 	
 	handler: (request, h) => {
-
-		return CompanyModel.findById(request.params.id, (error, data) => {
+		
+		/* return CompanyModel.find(request.params.id,(error, data) => {
+			
 			if (error) {
 				return{
 					error: true,
 					data: error,
 					statusCode: 401,
 					statusText: 'NOK',
+					
 				}
 			} else {
 				
-				return {
-					error: false,
-					data: data,
-					statusCode: 200,
-					statusText: 'OK',
-					response:'contem area Livre'
-					}
+				
+
+					return {
+					
+						error: false,
+						data: data,
+						statusCode: 200,
+						statusText: 'OK',
+						response:'contem area Livre'
+						}
+				
+				
 				
 			}
-		})
+		}) */
+		return CompanyModel.find({podeArea:{$gte: 1}});
+		
 	}
 },
 
@@ -96,6 +105,7 @@ module.exports = [
 			, status: request.payload.status
 			, qtdArea: request.payload.qtdArea
 			, areaMax: request.payload.areaMax
+			, podeArea: request.payload.podeArea
 			, created_at: getCurrentDateWithoutTimezone
 		})
 

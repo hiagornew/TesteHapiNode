@@ -6,6 +6,7 @@ const _schema = {
 	, status: { type: Boolean, required: true }
 	, qtdArea:{type:Number, require:true}
 	, areaMax:{type:Number, require:true}
+	, podeArea:{type:Number,require:true}
 	, created_at: Date
 	, updated_at: Date
 }
