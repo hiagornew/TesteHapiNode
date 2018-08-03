@@ -17,9 +17,11 @@ server.route({
 	method: 'GET',
 	path: `${Constants.URI}`,
 	handler: (request, h) => {
-	  return 'Hello Word!';
+	  return 'Hello Word!!!';
 	}
-  })
+	})
+	
+	
 
 server.route(Product)
 server.route(Categorie)

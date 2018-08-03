@@ -10,22 +10,22 @@ module.exports = [
 	{
 		method: 'GET',
 		path: URI,
-		handler: (req, reply) => {
-			ProductModel.find((error, data) => {
+		handler: (request, h) => {
+			return ProductModel.find((error, data) => {
 				if (error) {
-					reply({
+					return{
 						error: true,
 						data: error,
 						statusCode: 401,
 						statusText: 'NOK',
-					}).code(401)
+					}
 				} else {
-					reply({
+					return{
 						error: false,
 						data: data,
 						statusCode: 200,
 						statusText: 'OK'
-					}).code(200)
+					}
 				}
 			})
 		}
@@ -35,22 +35,22 @@ module.exports = [
 	{
 		method: 'GET',
 		path: URI + `/{id}`,
-		handler: (req, reply) => {
-			ProductModel.findById(req.params.id, (error, data) => {
+		handler: (request, h) => {
+			return ProductModel.findById(req.params.id, (error, data) => {
 				if (error) {
-					reply({
+					return{
 						error: true,
 						data: error,
 						statusCode: 401,
 						statusText: 'NOK',
-					}).code(401)
+					}
 				} else {
-					reply({
+					return{
 						error: false,
 						data: data,
 						statusCode: 200,
 						statusText: 'OK'
-					}).code(200)
+					}
 				}
 			})
 		}
@@ -60,10 +60,9 @@ module.exports = [
 	{
 		method: 'POST',
 		path: URI,
-		handler: (request, reply) => {
+		handler: (request, h) => {
 			const product = new ProductModel({
 					name: request.payload.name
-				, id_categorie: request.payload.id_categorie
 				, price: request.payload.price
 				, qtd: request.payload.qtd
 				, status: request.payload.status
@@ -73,30 +72,31 @@ module.exports = [
 			product.save((error, data) => {
 				if (error) {
 					if (error.index == 0) {
-						reply({
+						return{
 							error: true,
 							data: 'Já existe um produto registrado com esse nome!',
 							statusCode: 403,
 							statusText: 'NOK',
-						}).code(403)
+						}
 					} else {
-						reply({
+						return{
 							error: true,
 							data: error,
 							statusCode: 200,
 							statusText: 'NOK',
-						})
+						}
 					}
 				} else {
-					reply({
+					return{
 						error: false,
 						data: data,
 						message: 'Novo produto cadastrado com sucesso!',
 						statusCode: 201,
 						statusText: 'OK'
-					}).code(201)
+					}
 				}
 			})
+			return{response:'Cadastro Feito'}
 		}
 	},
 
@@ -104,12 +104,11 @@ module.exports = [
 	{
 		method: 'PUT',
 		path: URI + `/{id}`,
-		handler: (request, reply) => {
+		handler: (request, h) => {
 			const _id = { _id: request.params.id }
 
 			const product = {
 					name: request.payload.name
-				, id_categorie: request.payload.id_categorie
 				, price: request.payload.price
 				, qtd: request.payload.qtd
 				, status: request.payload.status
@@ -118,22 +117,23 @@ module.exports = [
 
 			ProductModel.update(_id, product, { multi: false }, (error, data) => {
 				if (error) {
-					reply({
+					return{
 						error: true,
 						data: error,
 						statusCode: 401,
 						statusText: 'NOK',
-					}).code(401)
+					}
 				} else {
-					reply({
+					return{
 						error: false,
 						data: data,
 						message: 'Produto editado com sucesso!',
 						statusCode: 204,
 						statusText: 'OK'
-					}).code(204)
+					}
 				}
 			})
+			return{response:'Cadastro Atualizado'}
 		}
 	},
 
@@ -141,27 +141,28 @@ module.exports = [
 	{
 		method: 'DELETE',
 		path: URI + `/{id}`,
-		handler: (request, reply) => {
+		handler: (request, h) => {
 			const _id = { _id: request.params.id }
 
 			ProductModel.remove(_id, (error, data) => {
 				if (error) {
-					reply({
+					return{
 						error: true,
 						data: error,
 						statusCode: 401,
 						statusText: 'NOK',
-					}).code(401)
+					}
 				} else {
-					reply({
+					return{
 						error: false,
 						data: data,
 						message: 'Produto deletado com sucesso!',
 						statusCode: 200,
 						statusText: 'OK'
-					}).code(200)
+					}
 				}
 			})
+			return{ response:' foi deletado'}
 		}
 	}
 ]

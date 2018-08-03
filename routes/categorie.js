@@ -11,7 +11,7 @@ module.exports = [
 		method: 'GET',
 		path: URI,
 		handler: (request, h) => {
-			return CategorieModel.find((error, data) => {
+			 return CategorieModel.find((error, data) => {
 				if (error) {
 					return{
 						error: true,
@@ -23,6 +23,7 @@ module.exports = [
 					return {data};
 				}
 			})
+			
 		}
     },
     
@@ -134,27 +135,28 @@ module.exports = [
 {
 	method: 'DELETE',
 	path: URI + `/{id}`,
-	handler: (request, reply) => {
+	handler: (request, h) => {
 		const _id = { _id: request.params.id }
 
 		CategorieModel.remove(_id, (error, data) => {
 			if (error) {
-				reply({
+				return{
 					error: true,
 					data: error,
 					statusCode: 401,
 					statusText: 'NOK',
-				}).code(401)
+				}
 			} else {
-				reply({
+				return{
 					error: false,
 					data: data,
 					message: 'Categoria deletada com sucesso!',
 					statusCode: 200,
 					statusText: 'OK'
-				}).code(200)
+				}
 			}
 		})
+		return request.params.id + " foi deletado";
 	}
 }
 
