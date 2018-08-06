@@ -35,7 +35,7 @@ module.exports = [
 		method: 'GET',
 		path: URI + `/areafree`,
 		handler: (request, h) => {
-			 return CompanyModel.find({$or:[{podeArea:{$gte:1}},{limited:false}]},(error,data) => {
+			 return CompanyModel.find({status:true,$or:[{podeArea:{$gte:1}},{limited:false}]},(error,data) => {
 				if (error) {
 					return{
 						error: true,
@@ -48,7 +48,7 @@ module.exports = [
 						data
 					};
 				}
-			})
+			}).explain("executionStats")
 			
 		}
     },
@@ -98,8 +98,6 @@ module.exports = [
 			
 		});
 		
-		//return areaFree;
-		
 		
 		
 	}
@@ -117,8 +115,9 @@ module.exports = [
 			qtdArea: request.payload.qtdArea
 		}
 
-	 const result = CompanyModel.findOneAndUpdate({name:request.params.name ,$or:[{podeArea:{$gte:company.qtdArea}}
-		,{limited:false}]},{$inc:{"qtdArea":company.qtdArea, "podeArea":-company.qtdArea}});
+	 const result = CompanyModel.findOneAndUpdate({name:request.params.name
+		,$or:[{podeArea:{$gte:company.qtdArea}},{limited:false}]}
+		,{$inc:{"qtdArea":company.qtdArea, "podeArea":-company.qtdArea}});
 				
 			return result;
 	}
