@@ -28,6 +28,29 @@ module.exports = [
 			})
 			
 		}
+	},
+	
+	// Get all companys area Free
+	{
+		method: 'GET',
+		path: URI + `/areafree`,
+		handler: (request, h) => {
+			 return CompanyModel.find({$or:[{podeArea:{$gte:1}},{limited:false}]},(error,data) => {
+				if (error) {
+					return{
+						error: true,
+						data: error,
+						statusCode: 401,
+						statusText: 'NOK',
+					}
+				} else {
+					return {
+						data
+					};
+				}
+			})
+			
+		}
     },
     
     // Get company by id
@@ -55,47 +78,27 @@ module.exports = [
 	}
 },
 
- // Get company area free
+ // Get company area free by name
  {
 	method: 'GET',
 	path: URI + `/areafree` + `/{name}`,
-	
 	handler: (request, h) => {
 		
-		/* CompanyModel.findById(request.params.id,(error, data) => {
-			
-			if (error) {
-				return{
-					error: true,
-					data: error,
-					statusCode: 401,
-					statusText: 'NOK',
-					
-				}
-			} else {
-				
-				
-
-					return {
-					
-						error: false,
-						data: data,
-						statusCode: 200,
-						statusText: 'OK',
-						response:'contem area Livre'
-						}
-				
-				
-				
+		return CompanyModel.find({name:request.params.name ,$or:[{podeArea:{$gte:1}},{limited:false}]},(error, data)=>{
+			var resposta;
+			if(data.length==0){
+				console.log('Company Bloqueada')
+				return{response:'Company Bloqueada'}
+			}
+			else{
+				console.log('Company Liberada')
+				return{response:'Company Liberada'}
 			}
 			
-		}) */
-		
-		const resultFind = CompanyModel.find({name:request.params.name ,podeArea:{$gte: 1}},(error, data)=>{
 			
 		});
-
-		return resultFind;
+		
+		//return areaFree;
 		
 		
 		
@@ -114,6 +117,7 @@ module.exports = [
 			, qtdArea: request.payload.qtdArea
 			, areaMax: request.payload.areaMax
 			, podeArea: request.payload.podeArea
+			, limited: request.payload.limited
 			, created_at: getCurrentDateWithoutTimezone
 		})
 
@@ -161,6 +165,7 @@ module.exports = [
 			, status: request.payload.status
 			, qtdArea: request.payload.qtdArea
 			, areaMax: request.payload.areaMax
+			,limited: request.payload.limited
 			, updated_at: getCurrentDateWithoutTimezone
 		}
 
