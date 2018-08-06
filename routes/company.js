@@ -105,6 +105,28 @@ module.exports = [
 	}
 },
 
+
+
+// Update a company with area free
+{
+	method: 'PUT',
+	path: URI + `/areafree` + `/{name}`,
+	handler: (request, h) => {
+		const _name = { _name: request.params.name }
+		const company = {
+			qtdArea: request.payload.qtdArea
+		}
+
+	 const result = CompanyModel.findOneAndUpdate({name:request.params.name ,$or:[{podeArea:{$gte:company.qtdArea}}
+		,{limited:false}]},{$inc:{"qtdArea":company.qtdArea, "podeArea":-company.qtdArea}});
+				
+			return result;
+	}
+		
+		
+},
+
+
 // Create a new company
 {
 	method: 'POST',
@@ -116,7 +138,7 @@ module.exports = [
 			, status: request.payload.status
 			, qtdArea: request.payload.qtdArea
 			, areaMax: request.payload.areaMax
-			, podeArea: request.payload.podeArea
+			,podeArea: request.payload.podeArea 
 			, limited: request.payload.limited
 			, created_at: getCurrentDateWithoutTimezone
 		})
